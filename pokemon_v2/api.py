@@ -363,6 +363,21 @@ class PokemonSpeciesResource(PokeapiCommonViewset):
     serializer_class = PokemonSpeciesDetailSerializer
     list_serializer_class = PokemonSpeciesSummarySerializer
 
+    def get_queryset(self):
+        is_baby = self.request.query_params.get("is_baby")
+        is_mythical = self.request.query_params.get("is_mythical")
+        is_legendary = self.request.query_params.get("is_legendary")
+
+        queryset = PokemonSpecies.objects.all()
+        if is_baby:
+            queryset = queryset.filter(is_baby=bool(is_baby))
+        if is_legendary:
+            queryset = queryset.filter(is_legendary=bool(is_legendary))
+        if is_mythical:
+            queryset = queryset.filter(is_mythical=bool(is_mythical))
+
+        return queryset
+
 
 class RegionResource(PokeapiCommonViewset):
 
